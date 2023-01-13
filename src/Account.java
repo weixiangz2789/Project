@@ -4,6 +4,10 @@ public class Account {
     private double checkingBal;
     private double savingBal;
 
+    public Account (double checkingBal, double savingBal){
+        this.checkingBal = checkingBal;
+        this.savingBal = savingBal;
+    }
     public double getCheckingBal(){
         return checkingBal;
     }
@@ -11,7 +15,7 @@ public class Account {
         return savingBal;
     }
 
-    public void withdraw(int accNumber, int amount){
+    public void withdraw(int accNumber, double amount){
         if (accNumber == 1){
             checkingBal -= amount;
         }
@@ -20,7 +24,7 @@ public class Account {
         }
     }
 
-    public void deposit(int accNumber, int amount){
+    public void deposit(int accNumber, double amount){
         if (accNumber == 1){
             checkingBal += amount;
         }
@@ -29,7 +33,7 @@ public class Account {
         }
     }
 
-    public void transfer(int accNumber, int amount){
+    public void transfer(int accNumber, double amount){
         if (accNumber == 1){
             checkingBal -= amount;
             savingBal += amount;

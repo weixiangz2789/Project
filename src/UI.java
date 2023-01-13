@@ -1,3 +1,5 @@
+import org.w3c.dom.Text;
+
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -72,9 +74,10 @@ public class UI {
     }
 
     public static void createFrame() {
+        Customer customer = new Customer (user, pinNum);
 
         // Colors + Fonts
-        Color DARK_BLUE = new Color(13, 61, 150);
+        Color background = new Color(28,36,52);
         Color BLUE = new Color(40, 140, 215);
         Color LIGHT_BLUE = new Color(5, 180, 244);
         Color PINK_RED = new Color(243, 4, 107);
@@ -83,144 +86,215 @@ public class UI {
         Font f3 = new Font(Font.SANS_SERIF, Font.BOLD, 22);
         Font f4 = new Font(Font.SANS_SERIF, Font.PLAIN, 16);
 
-        //  Creates Frame
-        JFrame frame = new JFrame();
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setPreferredSize(new Dimension(850, 650));
-        frame.getContentPane().setBackground(DARK_BLUE);
-        frame.pack();
-        frame.setVisible(true);
+        //  Creates Frames
+        JFrame mainFrame = new JFrame();
+        JFrame withdrawFrame = new JFrame();
+        JFrame depositFrame = new JFrame();
+        JFrame transferFrame = new JFrame();
+        JFrame pinFrame = new JFrame();
+
+        JFrame[] frames = {mainFrame, withdrawFrame, depositFrame, transferFrame, pinFrame};
+
+        for (int i = 0; i < frames.length; i ++) {
+            frames[i].setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frames[i].setPreferredSize(new Dimension(850, 650));
+            frames[i].getContentPane().setBackground(background);
+            frames[i].pack();
+            frames[i].setLayout(null);
+            if (i == 0) {
+                frames[i].setVisible(true);
+            }
+        }
 
         // Creates Buttons
-        JButton button1 = new JButton("Withdraw");
-        JButton button2 = new JButton("Deposit");
-        JButton button3 = new JButton("Transfer");
-        JButton button4 = new JButton("Change PIN");
-        JButton button5 = new JButton("EXIT");
-        JButton[] buttonArr = {button1, button2, button3, button4, button5};
-        button1.setBounds(325, 200, 225, 100);
-        button2.setBounds(575, 200, 225, 100);
-        button3.setBounds(325, 325, 225, 100);
-        button4.setBounds(575, 325, 225, 100);
-        button5.setBounds(750, 565, 75, 30);
+        JButton withdrawButton = new JButton("Withdraw");
+        JButton depositButton = new JButton("Deposit");
+        JButton transferButton = new JButton("Transfer");
+        JButton pinButton = new JButton("Change PIN");
+        JButton exit = new JButton("EXIT");
+        JButton[] buttonArr = {withdrawButton, depositButton, transferButton, pinButton, exit};
+        withdrawButton.setBounds(325, 200, 225, 100);
+        depositButton.setBounds(575, 200, 225, 100);
+        transferButton.setBounds(325, 325, 225, 100);
+        pinButton.setBounds(575, 325, 225, 100);
+        exit.setBounds(750, 565, 75, 30);
         for (int i = 0; i < 5; i++) {
-            frame.add(buttonArr[i]);
+            mainFrame.add(buttonArr[i]);
             buttonArr[i].setForeground(Color.WHITE);
             buttonArr[i].setBackground(LIGHT_BLUE);
             buttonArr[i].setBorderPainted(false);
             if (i == 4) {
-                button5.setBackground(PINK_RED);
+                exit.setBackground(PINK_RED);
             }
             buttonArr[i].setFont(f1);
         }
 
-        button1.addActionListener(new ActionListener() {
+
+        depositButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                frame.setVisible(false);
+                mainFrame.setVisible(false);
+                depositFrame.setVisible(true);
+                JLabel accNum = new JLabel("Account Number: ");
+                JLabel depAmount = new JLabel("Deposit Amount: ");
+                accNum.setBounds(100, 105, 200, 100);
+                depAmount.setBounds(100,165,200,100);
 
-            }
-        });
-        button2.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                frame.setVisible(false);
-                JFrame frame1 = new JFrame();
-                frame1.setPreferredSize(new Dimension(850, 650));
-                frame1.getContentPane().setBackground(Color.DARK_GRAY);
-                frame1.pack();
-                frame1.setVisible(true);
+                JTextField accNum_field = new JTextField();
+                JTextField depAmount_field = new JTextField();
+                accNum_field.setBounds(250, 140, 300, 35);
+                depAmount_field.setBounds(250, 200, 300, 35);
 
-                JButton back = new JButton();
-                back.setBounds(100, 100, 1, 1);
-                back.setForeground(Color.WHITE);
-                back.setBackground(PINK_RED);
-                frame1.add(back);
+                JButton submit = new JButton("Submit");
+                submit.setBounds(100, 400, 200, 35);
+                depositFrame.add(submit);
 
-                back.addActionListener(new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-                        frame1.dispose();
-                        frame.setVisible(true);
-                    }
-                });
+                accNum.setFont(f1);
+                depAmount.setFont(f1);
+                accNum.setForeground(Color.WHITE);
+                depAmount.setForeground(Color.WHITE);
+                submit.setBackground(Color.WHITE);
+                submit.setFont(f1);
+                submit.setBorderPainted(false);
 
-            }
-        });
-        button3.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                frame.setVisible(false);
-                JFrame frame1 = new JFrame();
-                frame1.setPreferredSize(new Dimension(850, 650));
-                frame1.getContentPane().setBackground(Color.DARK_GRAY);
-                frame1.pack();
-                frame1.setVisible(true);
+                depAmount_field.setBorder(BorderFactory.createEmptyBorder());
+                accNum_field.setBorder(BorderFactory.createEmptyBorder());
 
-                JButton back = new JButton();
+                depositFrame.add(accNum);
+                depositFrame.add(accNum_field);
+                depositFrame.add(depAmount);
+                depositFrame.add(depAmount_field);
+                depositFrame.add(submit);
+
+                JButton back = new JButton("Back");
                 back.setBounds(750, 565, 75, 30);
                 back.setForeground(Color.WHITE);
                 back.setBackground(PINK_RED);
-                frame1.add(back);
+                depositFrame.add(back);
+
+                submit.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        try {
+                            customer.getAccount().deposit(Integer.parseInt(accNum_field.getText()), Double.parseDouble(depAmount_field.getText()));
+                            depositFrame.setVisible(false);
+                            mainFrame.setVisible(true);
+
+                        }
+                        catch (NumberFormatException pinNum) {
+                            JOptionPane.showMessageDialog(null, "Make sure you are entering a valid number!" );
+                        }
+                    }
+                });
 
                 back.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
-                        frame1.dispose();
-                        frame.setVisible(true);
+                        pinFrame.dispose();
+                        mainFrame.setVisible(true);
                     }
                 });
 
             }
         });
-        button4.addActionListener(new ActionListener() {
+
+        pinButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                frame.setVisible(false);
+                mainFrame.setVisible(false);
+                pinFrame.setVisible(true);
+                JLabel accNum = new JLabel("Account Number: ");
+                JLabel depAmount = new JLabel("Deposit Amount: ");
+                accNum.setBounds(100, 105, 200, 100);
+                depAmount.setBounds(100,165,200,100);
+
+                JTextField accNum_field = new JTextField();
+                JTextField depAmount_field = new JTextField();
+                accNum_field.setBounds(250, 140, 300, 35);
+                depAmount_field.setBounds(250, 200, 300, 35);
+
+                JButton submit = new JButton("Submit");
+                submit.setBounds(100, 400, 200, 35);
+                depositFrame.add(submit);
+
+                accNum.setFont(f1);
+                depAmount.setFont(f1);
+                accNum.setForeground(Color.WHITE);
+                depAmount.setForeground(Color.WHITE);
+                submit.setBackground(Color.WHITE);
+                submit.setFont(f1);
+                submit.setBorderPainted(false);
+
+                depAmount_field.setBorder(BorderFactory.createEmptyBorder());
+                accNum_field.setBorder(BorderFactory.createEmptyBorder());
+
+                pinFrame.add(accNum);
+                pinFrame.add(accNum_field);
+                pinFrame.add(depAmount);
+                pinFrame.add(depAmount_field);
+                pinFrame.add(submit);
+
+                JButton back = new JButton("Back");
+                back.setBounds(750, 565, 75, 30);
+                back.setForeground(Color.WHITE);
+                back.setBackground(PINK_RED);
+                pinFrame.add(back);
+
+                submit.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        try {
+
+                        }
+                        catch (NumberFormatException pinNum) {
+                            JOptionPane.showMessageDialog(null, "Make sure you are entering a valid pin!" );
+                        }
+                    }
+                });
+
+                back.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        pinFrame.dispose();
+                        mainFrame.setVisible(true);
+                    }
+                });
 
             }
         });
-        button5.addActionListener((event) -> System.exit(0));
+
+        exit.addActionListener((event) -> System.exit(0));
 
 
         // Creates txt labels
         JLabel ATM = new JLabel("ATM");
-        JLabel Welcome = new JLabel("Welcome!");
+        JLabel welcome = new JLabel("Welcome!");
         JLabel name = new JLabel(user);
-        JLabel Checking = new JLabel("Checking #1");
-        JLabel CheckBal = new JLabel("$925.74");
-        JLabel Saving = new JLabel("Saving #2");
-        JLabel SavingBal = new JLabel("$1018.10");
+        JLabel checking = new JLabel("Checking #1");
+        JLabel checkBal = new JLabel("$" + Double.toString(customer.getAccount().getCheckingBal()));
+        JLabel saving = new JLabel("Saving #2");
+        JLabel saveBal = new JLabel("$" + Double.toString(customer.getAccount().getSavingBal()));
+
+        JLabel[] labels = {ATM, welcome, name, checking, checkBal, saving, saveBal};
 
         ATM.setBounds(25, -12, 100, 100);
-        Welcome.setBounds(25, 150, 100, 100);
+        welcome.setBounds(25, 150, 100, 100);
         name.setBounds(25, 175, 200, 100);
-        Checking.setBounds(25, 225, 100, 100);
-        CheckBal.setBounds(25, 250, 100, 100);
-        Saving.setBounds(25, 300, 100, 100);
-        SavingBal.setBounds(25, 325, 100, 100);
+        checking.setBounds(25, 225, 100, 100);
+        checkBal.setBounds(25, 250, 100, 100);
+        saving.setBounds(25, 300, 100, 100);
+        saveBal.setBounds(25, 325, 100, 100);
 
-        ATM.setFont(f2);
-        Welcome.setFont(f4);
-        name.setFont(f3);
-        Checking.setFont(f4);
-        CheckBal.setFont(f3);
-        Saving.setFont(f4);
-        SavingBal.setFont(f3);
+        for (int i = 0; i < labels.length; i ++){
+            mainFrame.add(labels[i]);
+            if (i == 0){
+                labels[i].setFont(f2);
+                labels[i].setForeground(Color.WHITE);
+            }
+            else if (i % 2 == 1){
+                labels[i].setFont(f4);
+                labels[i].setForeground(BLUE);
+            }
+            else{
+                labels[i].setFont(f3);
+                labels[i].setForeground(Color.WHITE);
+            }
+        }
 
-        ATM.setForeground(Color.WHITE);
-        Welcome.setForeground(BLUE);
-        name.setForeground(Color.WHITE);
-        Checking.setForeground(BLUE);
-        CheckBal.setForeground(Color.WHITE);
-        Saving.setForeground(BLUE);
-        SavingBal.setForeground(Color.WHITE);
-
-
-        frame.add(name);
-        frame.add(ATM);
-        frame.add(Welcome);
-        frame.add(Checking);
-        frame.add(CheckBal);
-        frame.add(Saving);
-        frame.add(SavingBal);
-
-
-        frame.setLayout(null);
-        frame.setVisible(true);
+        mainFrame.setVisible(true);
     }
 }
