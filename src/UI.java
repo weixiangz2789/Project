@@ -11,6 +11,9 @@ import java.awt.*;
 public class UI {
     private static String user;
     private static int pinNum;
+    private static String acc1Bal = "0.00";
+    private static String acc2Bal = "0.00";
+    static JLabel checkBal = new JLabel("$" + acc1Bal);
 
     public static void introFrame() {
 
@@ -177,6 +180,10 @@ public class UI {
                             customer.getAccount().deposit(Integer.parseInt(accNum_field.getText()), Double.parseDouble(depAmount_field.getText()));
                             depositFrame.setVisible(false);
                             mainFrame.setVisible(true);
+                            acc1Bal = Double.toString(customer.getAccount().getCheckingBal());
+                            acc2Bal = Double.toString(customer.getAccount().getSavingBal());
+                            checkBal.setText(acc1Bal);
+
 
                         }
                         catch (NumberFormatException pinNum) {
@@ -265,9 +272,8 @@ public class UI {
         JLabel welcome = new JLabel("Welcome!");
         JLabel name = new JLabel(user);
         JLabel checking = new JLabel("Checking #1");
-        JLabel checkBal = new JLabel("$" + Double.toString(customer.getAccount().getCheckingBal()));
         JLabel saving = new JLabel("Saving #2");
-        JLabel saveBal = new JLabel("$" + Double.toString(customer.getAccount().getSavingBal()));
+        JLabel saveBal = new JLabel("$" + acc2Bal);
 
         JLabel[] labels = {ATM, welcome, name, checking, checkBal, saving, saveBal};
 
@@ -294,7 +300,6 @@ public class UI {
                 labels[i].setForeground(Color.WHITE);
             }
         }
-
         mainFrame.setVisible(true);
     }
 }
