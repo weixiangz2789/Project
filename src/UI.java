@@ -11,11 +11,9 @@ import java.awt.*;
 public class UI {
     private static String user;
     private static int pinNum;
-    private static String acc1Bal = "0.00";
-    private static String acc2Bal = "0.00";
     private static Customer customer = new Customer (user, pinNum);
-    static JLabel checkBal = new JLabel("$" + acc1Bal);
-    static JLabel saveBal = new JLabel("$" + acc2Bal);
+    static JLabel checkBal = new JLabel("$" + customer.getAccount().getCheckingBal());
+    static JLabel saveBal = new JLabel("$" + customer.getAccount().getSavingBal());
 
     public static void introFrame() {
 
@@ -139,7 +137,8 @@ public class UI {
 //            public void actionPerformed(ActionEvent e) {
 //
 //            }
-//        }
+//        });
+
         depositButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 mainFrame.setVisible(false);
@@ -194,10 +193,8 @@ public class UI {
                             mainFrame.setVisible(true);
                             depAmount_field.setText(" ");
                             accNum_field.setText(" ");
-                            acc1Bal = Double.toString(customer.getAccount().getCheckingBal());
-                            acc2Bal = Double.toString(customer.getAccount().getSavingBal());
-                            checkBal.setText("$" + acc1Bal);
-                            saveBal.setText("$" + acc2Bal);
+                            checkBal.setText("$" + customer.getAccount().getCheckingBal());
+                            saveBal.setText("$" + customer.getAccount().getSavingBal());
                         }
                         catch (NumberFormatException pinNum) {
                             JOptionPane.showMessageDialog(null, "Make sure you are entering a valid number!" );
@@ -216,11 +213,94 @@ public class UI {
         });
 
 
-//        transferButton.addActionListener(new ActionListener() {
-//            public void actionPerformed(ActionEvent e) {
-//
-//            }
-//        }
+        transferButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                mainFrame.setVisible(false);
+                transferFrame.setVisible(true);
+                JLabel from = new JLabel("From Account: ");
+                JLabel to = new JLabel("To Account: ");
+                JLabel amount = new JLabel("Amount: ");
+                from.setBounds(100, 105, 200, 100);
+                to.setBounds(100, 165, 200, 100);
+                amount.setBounds(100, 225, 200, 100);
+
+                JTextField from_field = new JTextField();
+                JTextField to_field = new JTextField();
+                JTextField amount_field = new JTextField();
+                from_field.setBounds(250, 140, 300, 35);
+                to_field.setBounds(250, 200, 300, 35);
+                amount_field.setBounds(250, 260, 300, 35);
+
+                JButton submit = new JButton("Submit");
+                submit.setBounds(100, 400, 200, 35);
+                transferFrame.add(submit);
+
+                from.setFont(f1);
+                to.setFont(f1);
+                amount.setFont(f1);
+                amount.setForeground(Color.WHITE);
+                from.setForeground(Color.WHITE);
+                to.setForeground(Color.WHITE);
+                submit.setBackground(Color.WHITE);
+                submit.setFont(f1);
+                submit.setBorderPainted(false);
+
+                from_field.setFont(f1);
+                to_field.setFont(f1);
+                amount_field.setFont(f1);
+                amount_field.setText(" ");
+                from_field.setText(" ");
+                to_field.setText(" ");
+
+                from_field.setBorder(BorderFactory.createEmptyBorder());
+                to_field.setBorder(BorderFactory.createEmptyBorder());
+                amount_field.setBorder(BorderFactory.createEmptyBorder());
+
+                transferFrame.add(from);
+                transferFrame.add(from_field);
+                transferFrame.add(to);
+                transferFrame.add(to_field);
+                transferFrame.add(amount_field);
+                transferFrame.add(amount);
+                transferFrame.add(submit);
+
+                JButton back = new JButton("Back");
+                back.setBounds(750, 565, 75, 30);
+                back.setForeground(Color.WHITE);
+                back.setBackground(PINK_RED);
+                transferFrame.add(back);
+                back.setBorderPainted(false);
+
+                submit.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        try {
+                            customer.getAccount().transfer(Integer.parseInt(from_field.getText().substring(1)), Double.parseDouble(amount_field.getText().substring(1)));
+                            amount_field.setText(" ");
+                            to_field.setText(" ");
+                            from_field.setText(" ");
+                            transferFrame.setVisible(false);
+                            mainFrame.setVisible(true);
+
+                            checkBal.setText("$" + customer.getAccount().getCheckingBal());
+                            saveBal.setText("$" + customer.getAccount().getSavingBal());
+
+                        } catch (NumberFormatException pinNum) {
+                            JOptionPane.showMessageDialog(null, "");
+                        }
+                    }
+                });
+
+                back.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        transferFrame.dispose();
+                        mainFrame.setVisible(true);
+                    }
+                });
+
+            }
+        });
+
+
 
         pinButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -238,7 +318,6 @@ public class UI {
 
                 JButton submit = new JButton("Submit");
                 submit.setBounds(100, 400, 200, 35);
-                depositFrame.add(submit);
 
                 currentPin.setFont(f1);
                 newPin.setFont(f1);
