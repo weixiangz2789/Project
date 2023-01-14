@@ -13,7 +13,9 @@ public class UI {
     private static int pinNum;
     private static String acc1Bal = "0.00";
     private static String acc2Bal = "0.00";
+    private static Customer customer = new Customer (user, pinNum);
     static JLabel checkBal = new JLabel("$" + acc1Bal);
+    static JLabel saveBal = new JLabel("$" + acc2Bal);
 
     public static void introFrame() {
 
@@ -53,6 +55,8 @@ public class UI {
         pin_field.setFont(f1);
         submit.setBackground(Color.white);
         submit.setFont(f1);
+        name_field.setText(" ");
+        pin_field.setText(" ");
         submit.setBorderPainted(false);
 
         name_field.setBorder(BorderFactory.createEmptyBorder());
@@ -61,9 +65,9 @@ public class UI {
         submit.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 try {
-                    user = name_field.getText();
-                    pinNum = Integer.parseInt(pin_field.getText());
-                    createFrame();
+                    user = name_field.getText().substring(1);
+                    pinNum = Integer.parseInt(pin_field.getText().substring(1));
+                    mainFrame();
                     intro.dispose();
                 }
                 catch (NumberFormatException pinNum) {
@@ -76,8 +80,7 @@ public class UI {
         intro.setVisible(true);
     }
 
-    public static void createFrame() {
-        Customer customer = new Customer (user, pinNum);
+    public static void mainFrame() {
 
         // Colors + Fonts
         Color background = new Color(28,36,52);
@@ -132,7 +135,11 @@ public class UI {
             buttonArr[i].setFont(f1);
         }
 
-
+//        withdrawButton.addActionListener(new ActionListener() {
+//            public void actionPerformed(ActionEvent e) {
+//
+//            }
+//        }
         depositButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 mainFrame.setVisible(false);
@@ -153,11 +160,15 @@ public class UI {
 
                 accNum.setFont(f1);
                 depAmount.setFont(f1);
+                accNum_field.setFont(f1);
+                depAmount_field.setFont(f1);
                 accNum.setForeground(Color.WHITE);
                 depAmount.setForeground(Color.WHITE);
                 submit.setBackground(Color.WHITE);
                 submit.setFont(f1);
                 submit.setBorderPainted(false);
+                depAmount_field.setText(" ");
+                accNum_field.setText(" ");
 
                 depAmount_field.setBorder(BorderFactory.createEmptyBorder());
                 accNum_field.setBorder(BorderFactory.createEmptyBorder());
@@ -173,18 +184,20 @@ public class UI {
                 back.setForeground(Color.WHITE);
                 back.setBackground(PINK_RED);
                 depositFrame.add(back);
+                back.setBorderPainted(false);
 
                 submit.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
                         try {
-                            customer.getAccount().deposit(Integer.parseInt(accNum_field.getText()), Double.parseDouble(depAmount_field.getText()));
+                            customer.getAccount().deposit(Integer.parseInt(accNum_field.getText().substring(1)), Double.parseDouble(depAmount_field.getText().substring(1)));
                             depositFrame.setVisible(false);
                             mainFrame.setVisible(true);
+                            depAmount_field.setText(" ");
+                            accNum_field.setText(" ");
                             acc1Bal = Double.toString(customer.getAccount().getCheckingBal());
                             acc2Bal = Double.toString(customer.getAccount().getSavingBal());
-                            checkBal.setText(acc1Bal);
-
-
+                            checkBal.setText("$" + acc1Bal);
+                            saveBal.setText("$" + acc2Bal);
                         }
                         catch (NumberFormatException pinNum) {
                             JOptionPane.showMessageDialog(null, "Make sure you are entering a valid number!" );
@@ -194,7 +207,7 @@ public class UI {
 
                 back.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
-                        pinFrame.dispose();
+                        depositFrame.dispose();
                         mainFrame.setVisible(true);
                     }
                 });
@@ -202,39 +215,51 @@ public class UI {
             }
         });
 
+
+//        transferButton.addActionListener(new ActionListener() {
+//            public void actionPerformed(ActionEvent e) {
+//
+//            }
+//        }
+
         pinButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 mainFrame.setVisible(false);
                 pinFrame.setVisible(true);
-                JLabel accNum = new JLabel("Account Number: ");
-                JLabel depAmount = new JLabel("Deposit Amount: ");
-                accNum.setBounds(100, 105, 200, 100);
-                depAmount.setBounds(100,165,200,100);
+                JLabel currentPin = new JLabel("Current Pin: ");
+                JLabel newPin = new JLabel("New Pin: ");
+                currentPin.setBounds(100, 105, 200, 100);
+                newPin.setBounds(100,165,200,100);
 
-                JTextField accNum_field = new JTextField();
-                JTextField depAmount_field = new JTextField();
-                accNum_field.setBounds(250, 140, 300, 35);
-                depAmount_field.setBounds(250, 200, 300, 35);
+                JTextField currentPin_field = new JTextField();
+                JTextField newPin_field = new JTextField();
+                currentPin_field.setBounds(250, 140, 300, 35);
+                newPin_field.setBounds(250, 200, 300, 35);
 
                 JButton submit = new JButton("Submit");
                 submit.setBounds(100, 400, 200, 35);
                 depositFrame.add(submit);
 
-                accNum.setFont(f1);
-                depAmount.setFont(f1);
-                accNum.setForeground(Color.WHITE);
-                depAmount.setForeground(Color.WHITE);
+                currentPin.setFont(f1);
+                newPin.setFont(f1);
+                currentPin.setForeground(Color.WHITE);
+                newPin.setForeground(Color.WHITE);
                 submit.setBackground(Color.WHITE);
                 submit.setFont(f1);
                 submit.setBorderPainted(false);
 
-                depAmount_field.setBorder(BorderFactory.createEmptyBorder());
-                accNum_field.setBorder(BorderFactory.createEmptyBorder());
+                currentPin_field.setFont(f1);
+                newPin_field.setFont(f1);
+                currentPin_field.setText(" ");
+                newPin_field.setText(" ");
 
-                pinFrame.add(accNum);
-                pinFrame.add(accNum_field);
-                pinFrame.add(depAmount);
-                pinFrame.add(depAmount_field);
+                currentPin_field.setBorder(BorderFactory.createEmptyBorder());
+                newPin_field.setBorder(BorderFactory.createEmptyBorder());
+
+                pinFrame.add(currentPin);
+                pinFrame.add(currentPin_field);
+                pinFrame.add(newPin);
+                pinFrame.add(newPin_field);
                 pinFrame.add(submit);
 
                 JButton back = new JButton("Back");
@@ -242,11 +267,20 @@ public class UI {
                 back.setForeground(Color.WHITE);
                 back.setBackground(PINK_RED);
                 pinFrame.add(back);
+                back.setBorderPainted(false);
 
                 submit.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
                         try {
-
+                            if (Integer.parseInt(currentPin_field.getText().substring(1)) == pinNum){
+                                pinNum = Integer.parseInt(newPin_field.getText().substring(1));
+                                JOptionPane.showMessageDialog(null, "Success!");
+                                currentPin_field.setText(" ");
+                                newPin_field.setText(" ");
+                            }
+                            else{
+                                JOptionPane.showMessageDialog(null, "Incorrect Pin Number!" );
+                            }
                         }
                         catch (NumberFormatException pinNum) {
                             JOptionPane.showMessageDialog(null, "Make sure you are entering a valid pin!" );
@@ -273,7 +307,6 @@ public class UI {
         JLabel name = new JLabel(user);
         JLabel checking = new JLabel("Checking #1");
         JLabel saving = new JLabel("Saving #2");
-        JLabel saveBal = new JLabel("$" + acc2Bal);
 
         JLabel[] labels = {ATM, welcome, name, checking, checkBal, saving, saveBal};
 
