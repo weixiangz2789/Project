@@ -18,8 +18,7 @@ public class UI {
     public static void introFrame() {
 
         Color background = new Color(28,36,52);
-        Font f1 = new Font(Font.SANS_SERIF, Font.BOLD, 22);
-
+        Font f1 = new Font("Courier New", Font.BOLD, 16);
         JFrame intro = new JFrame();
         intro.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         intro.setPreferredSize(new Dimension(850, 650));
@@ -77,6 +76,21 @@ public class UI {
         intro.setLayout(null);
         intro.setVisible(true);
     }
+    public static void createBack(JFrame main, JFrame newFrame){
+        Color PINK_RED = new Color(243, 4, 107);
+        JButton back = new JButton("Back");
+        back.setBounds(750, 565, 75, 30);
+        back.setForeground(Color.WHITE);
+        back.setBackground(PINK_RED);
+        newFrame.add(back);
+        back.setBorderPainted(false);
+        back.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                newFrame.dispose();
+                main.setVisible(true);
+            }
+        });
+    }
 
     public static void mainFrame() {
 
@@ -85,10 +99,10 @@ public class UI {
         Color BLUE = new Color(40, 140, 215);
         Color LIGHT_BLUE = new Color(5, 180, 244);
         Color PINK_RED = new Color(243, 4, 107);
-        Font f1 = new Font(Font.SANS_SERIF, Font.BOLD, 16);
-        Font f2 = new Font(Font.SANS_SERIF, Font.BOLD, 35);
-        Font f3 = new Font(Font.SANS_SERIF, Font.BOLD, 22);
-        Font f4 = new Font(Font.SANS_SERIF, Font.PLAIN, 16);
+        Font f1 = new Font("Courier New", Font.BOLD, 16);
+        Font f2 = new Font("Courier New", Font.BOLD, 35);
+        Font f3 = new Font("Courier New", Font.BOLD, 25);
+        Font f4 = new Font("Courier New", Font.PLAIN, 16);
 
         //  Creates Frames
         JFrame mainFrame = new JFrame();
@@ -133,11 +147,66 @@ public class UI {
             buttonArr[i].setFont(f1);
         }
 
-//        withdrawButton.addActionListener(new ActionListener() {
-//            public void actionPerformed(ActionEvent e) {
-//
-//            }
-//        });
+        withdrawButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                mainFrame.setVisible(false);
+                withdrawFrame.setVisible(true);
+                JLabel fromAcc = new JLabel("From Account: ");
+                JLabel withAmount = new JLabel("Withdraw Amount: ");
+                fromAcc.setBounds(100, 105, 200, 100);
+                withAmount.setBounds(100,165,200,100);
+                createBack(mainFrame, withdrawFrame);
+
+                JTextField fromAcc_field = new JTextField();
+                JTextField withAmount_field = new JTextField();
+                fromAcc_field.setBounds(260, 140, 300, 35);
+                withAmount_field.setBounds(260, 200, 300, 35);
+
+                JButton submit = new JButton("Submit");
+                submit.setBounds(100, 400, 200, 35);
+                withdrawFrame.add(submit);
+
+                fromAcc.setFont(f1);
+                withAmount.setFont(f1);
+                fromAcc_field.setFont(f1);
+                withAmount_field.setFont(f1);
+                fromAcc.setForeground(Color.WHITE);
+                withAmount.setForeground(Color.WHITE);
+                submit.setBackground(Color.WHITE);
+                submit.setFont(f1);
+                submit.setBorderPainted(false);
+                fromAcc_field.setText(" ");
+                withAmount_field.setText(" ");
+
+                fromAcc_field.setBorder(BorderFactory.createEmptyBorder());
+                withAmount_field.setBorder(BorderFactory.createEmptyBorder());
+
+                withdrawFrame.add(fromAcc);
+                withdrawFrame.add(fromAcc_field);
+                withdrawFrame.add(withAmount);
+                withdrawFrame.add(withAmount_field);
+                withdrawFrame.add(submit);
+
+                submit.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        try {
+                            customer.getAccount().withdraw(Integer.parseInt(fromAcc_field.getText().substring(1)), Double.parseDouble(withAmount_field.getText().substring(1)));
+                            checkBal.setText("$" + customer.getAccount().getCheckingBal());
+                            saveBal.setText("$" + customer.getAccount().getSavingBal());
+                            withdrawFrame.setVisible(false);
+                            mainFrame.setVisible(true);
+                            fromAcc_field.setText(" ");
+                            withAmount_field.setText(" ");
+                        }
+                        catch (NumberFormatException pinNum) {
+                            JOptionPane.showMessageDialog(null, "Make sure you are entering a valid number!" );
+                        }
+                    }
+                });
+            }
+        });
+
+
 
         depositButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -178,13 +247,6 @@ public class UI {
                 depositFrame.add(depAmount_field);
                 depositFrame.add(submit);
 
-                JButton back = new JButton("Back");
-                back.setBounds(750, 565, 75, 30);
-                back.setForeground(Color.WHITE);
-                back.setBackground(PINK_RED);
-                depositFrame.add(back);
-                back.setBorderPainted(false);
-
                 submit.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
                         try {
@@ -201,13 +263,7 @@ public class UI {
                         }
                     }
                 });
-
-                back.addActionListener(new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-                        depositFrame.dispose();
-                        mainFrame.setVisible(true);
-                    }
-                });
+                createBack(mainFrame, depositFrame);
 
             }
         });
@@ -264,13 +320,6 @@ public class UI {
                 transferFrame.add(amount);
                 transferFrame.add(submit);
 
-                JButton back = new JButton("Back");
-                back.setBounds(750, 565, 75, 30);
-                back.setForeground(Color.WHITE);
-                back.setBackground(PINK_RED);
-                transferFrame.add(back);
-                back.setBorderPainted(false);
-
                 submit.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
                         try {
@@ -290,12 +339,7 @@ public class UI {
                     }
                 });
 
-                back.addActionListener(new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-                        transferFrame.dispose();
-                        mainFrame.setVisible(true);
-                    }
-                });
+                createBack(mainFrame, transferFrame);
 
             }
         });
@@ -341,13 +385,6 @@ public class UI {
                 pinFrame.add(newPin_field);
                 pinFrame.add(submit);
 
-                JButton back = new JButton("Back");
-                back.setBounds(750, 565, 75, 30);
-                back.setForeground(Color.WHITE);
-                back.setBackground(PINK_RED);
-                pinFrame.add(back);
-                back.setBorderPainted(false);
-
                 submit.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
                         try {
@@ -367,12 +404,7 @@ public class UI {
                     }
                 });
 
-                back.addActionListener(new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-                        pinFrame.dispose();
-                        mainFrame.setVisible(true);
-                    }
-                });
+                createBack(mainFrame, pinFrame);
 
             }
         });
@@ -392,7 +424,7 @@ public class UI {
         ATM.setBounds(25, -12, 100, 100);
         welcome.setBounds(25, 150, 100, 100);
         name.setBounds(25, 175, 200, 100);
-        checking.setBounds(25, 225, 100, 100);
+        checking.setBounds(25, 225, 200, 100);
         checkBal.setBounds(25, 250, 100, 100);
         saving.setBounds(25, 300, 100, 100);
         saveBal.setBounds(25, 325, 100, 100);
@@ -414,4 +446,6 @@ public class UI {
         }
         mainFrame.setVisible(true);
     }
+
+
 }
