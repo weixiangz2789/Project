@@ -17,6 +17,12 @@ public class UI {
         Color background = new Color(28,36,52);
         Font courierNew = new Font("Courier New", Font.BOLD, 16);
 
+        JFrame intro = new JFrame();
+        intro.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        intro.setPreferredSize(new Dimension(850, 650));
+        intro.getContentPane().setBackground(background);
+        intro.pack();
+
         JLabel name = new JLabel("Enter Name: ");
         name.setBounds(100, 105, 200, 100);
         name.setFont(courierNew);
@@ -37,17 +43,11 @@ public class UI {
         pin_field.setBorder(BorderFactory.createEmptyBorder());
 
         JButton submit = new JButton("Create Account");
-        submit.setBounds(100, 400, 200, 35);
+        submit.setBounds(100, 400, 175, 35);
         submit.setBackground(Color.white);
         submit.setFont(courierNew);
         submit.setBorderPainted(false);
 
-
-        JFrame intro = new JFrame();
-        intro.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        intro.setPreferredSize(new Dimension(850, 650));
-        intro.getContentPane().setBackground(background);
-        intro.pack();
         intro.add(name);
         intro.add(name_field);
         intro.add(pin);
@@ -59,8 +59,47 @@ public class UI {
                 try {
                     user = name_field.getText();
                     pinNum = Integer.parseInt(pin_field.getText());
-                    mainFrame();
                     intro.dispose();
+                    JFrame login = new JFrame();
+                    login.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                    login.setPreferredSize(new Dimension(850, 650));
+                    login.getContentPane().setBackground(background);
+                    login.pack();
+
+                    JLabel pin = new JLabel("Enter a PIN: ");
+                    pin.setBounds(100,165, 200, 100);
+                    pin.setForeground(Color.WHITE);
+
+                    JTextField pin_field = new JTextField();
+                    pin_field.setBounds(250,200,300,35);
+                    pin_field.setFont(courierNew);
+                    pin_field.setBorder(BorderFactory.createEmptyBorder());
+
+                    JButton loginButton = new JButton("Login");
+                    loginButton.setBounds(100, 400, 175, 35);
+                    loginButton.setBackground(Color.white);
+                    loginButton.setFont(courierNew);
+                    loginButton.setBorderPainted(false);
+
+                    login.add(pin);
+                    login.add(pin_field);
+                    login.add(loginButton);
+
+                    login.setLayout(null);
+                    login.setVisible(true);
+
+                    loginButton.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        if (Integer.parseInt(pin_field.getText()) == pinNum){
+                            login.setVisible(false);
+                            mainFrame();
+                        }
+                        else{
+                            JOptionPane.showMessageDialog(null, "Incorrect Pin!" );
+                        }
+                    }
+                });
+
                 }
                 catch (NumberFormatException pinNum) {
                     JOptionPane.showMessageDialog(null, "Make sure you are entering a valid name or pin!" );
