@@ -1,5 +1,3 @@
-import org.w3c.dom.Text;
-
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -16,54 +14,51 @@ public class UI {
     static JLabel saveBal = new JLabel("$" + customer.getAccount().getSavingBal());
 
     public static void introFrame() {
-
         Color background = new Color(28,36,52);
-        Font f1 = new Font("Courier New", Font.BOLD, 16);
+        Font courierNew = new Font("Courier New", Font.BOLD, 16);
+
+        JLabel name = new JLabel("Enter Name: ");
+        name.setBounds(100, 105, 200, 100);
+        name.setFont(courierNew);
+        name.setForeground(Color.WHITE);
+
+        JLabel pin = new JLabel("Create a PIN: ");
+        pin.setBounds(100,165, 200, 100);
+        pin.setForeground(Color.WHITE);
+
+        JTextField name_field = new JTextField();
+        name_field.setBounds(250,140,300,35);
+        name_field.setFont(courierNew);
+        name_field.setBorder(BorderFactory.createEmptyBorder());
+
+        JTextField pin_field = new JTextField();
+        pin_field.setBounds(250,200,300,35);
+        pin_field.setFont(courierNew);
+        pin_field.setBorder(BorderFactory.createEmptyBorder());
+
+        JButton submit = new JButton("Create Account");
+        submit.setBounds(100, 400, 200, 35);
+        submit.setBackground(Color.white);
+        submit.setFont(courierNew);
+        submit.setBorderPainted(false);
+
+
         JFrame intro = new JFrame();
         intro.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         intro.setPreferredSize(new Dimension(850, 650));
         intro.getContentPane().setBackground(background);
         intro.pack();
-
-        JLabel name = new JLabel("Enter Name: ");
-        JLabel pin = new JLabel("Create a PIN: ");
-        name.setBounds(100, 105, 200, 100);
-        pin.setBounds(100,165, 200, 100);
-
-        JTextField name_field = new JTextField();
-        JTextField pin_field = new JTextField();
-        name_field.setBounds(250,140,300,35);
-        pin_field.setBounds(250,200,300,35);
-
-        name.setForeground(Color.WHITE);
-        pin.setForeground(Color.WHITE);
-        intro.add(name_field);
         intro.add(name);
+        intro.add(name_field);
         intro.add(pin);
         intro.add(pin_field);
-
-        JButton submit = new JButton("Submit");
-        submit.setBounds(100, 400, 200, 35);
         intro.add(submit);
-
-        name.setFont(f1);
-        name_field.setFont(f1);
-        pin.setFont(f1);
-        pin_field.setFont(f1);
-        submit.setBackground(Color.white);
-        submit.setFont(f1);
-        name_field.setText(" ");
-        pin_field.setText(" ");
-        submit.setBorderPainted(false);
-
-        name_field.setBorder(BorderFactory.createEmptyBorder());
-        pin_field.setBorder(BorderFactory.createEmptyBorder());
 
         submit.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 try {
-                    user = name_field.getText().substring(1);
-                    pinNum = Integer.parseInt(pin_field.getText().substring(1));
+                    user = name_field.getText();
+                    pinNum = Integer.parseInt(pin_field.getText());
                     mainFrame();
                     intro.dispose();
                 }
@@ -99,7 +94,7 @@ public class UI {
         Color BLUE = new Color(40, 140, 215);
         Color LIGHT_BLUE = new Color(5, 180, 244);
         Color PINK_RED = new Color(243, 4, 107);
-        Font f1 = new Font("Courier New", Font.BOLD, 16);
+        Font courierNew = new Font("Courier New", Font.BOLD, 16);
         Font f2 = new Font("Courier New", Font.BOLD, 35);
         Font f3 = new Font("Courier New", Font.BOLD, 25);
         Font f4 = new Font("Courier New", Font.PLAIN, 16);
@@ -144,7 +139,7 @@ public class UI {
             if (i == 4) {
                 exit.setBackground(PINK_RED);
             }
-            buttonArr[i].setFont(f1);
+            buttonArr[i].setFont(courierNew);
         }
 
         withdrawButton.addActionListener(new ActionListener() {
@@ -166,17 +161,15 @@ public class UI {
                 submit.setBounds(100, 400, 200, 35);
                 withdrawFrame.add(submit);
 
-                fromAcc.setFont(f1);
-                withAmount.setFont(f1);
-                fromAcc_field.setFont(f1);
-                withAmount_field.setFont(f1);
+                fromAcc.setFont(courierNew);
+                withAmount.setFont(courierNew);
+                fromAcc_field.setFont(courierNew);
+                withAmount_field.setFont(courierNew);
                 fromAcc.setForeground(Color.WHITE);
                 withAmount.setForeground(Color.WHITE);
                 submit.setBackground(Color.WHITE);
-                submit.setFont(f1);
+                submit.setFont(courierNew);
                 submit.setBorderPainted(false);
-                fromAcc_field.setText(" ");
-                withAmount_field.setText(" ");
 
                 fromAcc_field.setBorder(BorderFactory.createEmptyBorder());
                 withAmount_field.setBorder(BorderFactory.createEmptyBorder());
@@ -190,13 +183,13 @@ public class UI {
                 submit.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
                         try {
-                            customer.getAccount().withdraw(Integer.parseInt(fromAcc_field.getText().substring(1)), Double.parseDouble(withAmount_field.getText().substring(1)));
+                            customer.getAccount().withdraw(Integer.parseInt(fromAcc_field.getText()), Double.parseDouble(withAmount_field.getText()));
                             checkBal.setText("$" + customer.getAccount().getCheckingBal());
                             saveBal.setText("$" + customer.getAccount().getSavingBal());
+                            fromAcc_field.setText("");
+                            withAmount_field.setText("");
                             withdrawFrame.setVisible(false);
                             mainFrame.setVisible(true);
-                            fromAcc_field.setText(" ");
-                            withAmount_field.setText(" ");
                         }
                         catch (NumberFormatException pinNum) {
                             JOptionPane.showMessageDialog(null, "Make sure you are entering a valid number!" );
@@ -226,17 +219,15 @@ public class UI {
                 submit.setBounds(100, 400, 200, 35);
                 depositFrame.add(submit);
 
-                accNum.setFont(f1);
-                depAmount.setFont(f1);
-                accNum_field.setFont(f1);
-                depAmount_field.setFont(f1);
+                accNum.setFont(courierNew);
+                depAmount.setFont(courierNew);
+                accNum_field.setFont(courierNew);
+                depAmount_field.setFont(courierNew);
                 accNum.setForeground(Color.WHITE);
                 depAmount.setForeground(Color.WHITE);
                 submit.setBackground(Color.WHITE);
-                submit.setFont(f1);
+                submit.setFont(courierNew);
                 submit.setBorderPainted(false);
-                depAmount_field.setText(" ");
-                accNum_field.setText(" ");
 
                 depAmount_field.setBorder(BorderFactory.createEmptyBorder());
                 accNum_field.setBorder(BorderFactory.createEmptyBorder());
@@ -250,11 +241,9 @@ public class UI {
                 submit.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
                         try {
-                            customer.getAccount().deposit(Integer.parseInt(accNum_field.getText().substring(1)), Double.parseDouble(depAmount_field.getText().substring(1)));
-                            depositFrame.setVisible(false);
-                            mainFrame.setVisible(true);
-                            depAmount_field.setText(" ");
-                            accNum_field.setText(" ");
+                            customer.getAccount().deposit(Integer.parseInt(accNum_field.getText()), Double.parseDouble(depAmount_field.getText()));
+                            accNum_field.setText("");
+                            depAmount_field.setText("");
                             checkBal.setText("$" + customer.getAccount().getCheckingBal());
                             saveBal.setText("$" + customer.getAccount().getSavingBal());
                         }
@@ -291,22 +280,19 @@ public class UI {
                 submit.setBounds(100, 400, 200, 35);
                 transferFrame.add(submit);
 
-                from.setFont(f1);
-                to.setFont(f1);
-                amount.setFont(f1);
+                from.setFont(courierNew);
+                to.setFont(courierNew);
+                amount.setFont(courierNew);
                 amount.setForeground(Color.WHITE);
                 from.setForeground(Color.WHITE);
                 to.setForeground(Color.WHITE);
                 submit.setBackground(Color.WHITE);
-                submit.setFont(f1);
+                submit.setFont(courierNew);
                 submit.setBorderPainted(false);
 
-                from_field.setFont(f1);
-                to_field.setFont(f1);
-                amount_field.setFont(f1);
-                amount_field.setText(" ");
-                from_field.setText(" ");
-                to_field.setText(" ");
+                from_field.setFont(courierNew);
+                to_field.setFont(courierNew);
+                amount_field.setFont(courierNew);
 
                 from_field.setBorder(BorderFactory.createEmptyBorder());
                 to_field.setBorder(BorderFactory.createEmptyBorder());
@@ -323,13 +309,12 @@ public class UI {
                 submit.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
                         try {
-                            customer.getAccount().transfer(Integer.parseInt(from_field.getText().substring(1)), Double.parseDouble(amount_field.getText().substring(1)));
-                            amount_field.setText(" ");
-                            to_field.setText(" ");
-                            from_field.setText(" ");
+                            customer.getAccount().transfer(Integer.parseInt(from_field.getText()), Double.parseDouble(amount_field.getText()));
                             transferFrame.setVisible(false);
                             mainFrame.setVisible(true);
-
+                            from_field.setText("");
+                            to_field.setText("");
+                            amount_field.setText("");
                             checkBal.setText("$" + customer.getAccount().getCheckingBal());
                             saveBal.setText("$" + customer.getAccount().getSavingBal());
 
@@ -363,18 +348,16 @@ public class UI {
                 JButton submit = new JButton("Submit");
                 submit.setBounds(100, 400, 200, 35);
 
-                currentPin.setFont(f1);
-                newPin.setFont(f1);
+                currentPin.setFont(courierNew);
+                newPin.setFont(courierNew);
                 currentPin.setForeground(Color.WHITE);
                 newPin.setForeground(Color.WHITE);
                 submit.setBackground(Color.WHITE);
-                submit.setFont(f1);
+                submit.setFont(courierNew);
                 submit.setBorderPainted(false);
 
-                currentPin_field.setFont(f1);
-                newPin_field.setFont(f1);
-                currentPin_field.setText(" ");
-                newPin_field.setText(" ");
+                currentPin_field.setFont(courierNew);
+                newPin_field.setFont(courierNew);
 
                 currentPin_field.setBorder(BorderFactory.createEmptyBorder());
                 newPin_field.setBorder(BorderFactory.createEmptyBorder());
@@ -388,15 +371,15 @@ public class UI {
                 submit.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
                         try {
-                            if (Integer.parseInt(currentPin_field.getText().substring(1)) == pinNum){
-                                pinNum = Integer.parseInt(newPin_field.getText().substring(1));
+                            if (Integer.parseInt(currentPin_field.getText()) == pinNum){
+                                pinNum = Integer.parseInt(newPin_field.getText());
                                 JOptionPane.showMessageDialog(null, "Success!");
-                                currentPin_field.setText(" ");
-                                newPin_field.setText(" ");
                             }
                             else{
                                 JOptionPane.showMessageDialog(null, "Incorrect Pin Number!" );
                             }
+                            currentPin_field.setText("");
+                            newPin_field.setText("");
                         }
                         catch (NumberFormatException pinNum) {
                             JOptionPane.showMessageDialog(null, "Make sure you are entering a valid pin!" );
