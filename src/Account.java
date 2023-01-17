@@ -43,4 +43,22 @@ public class Account {
             checkingBal += amount;
         }
     }
+    public boolean transferable(int accNumber, double amount){
+        if (accNumber == 1){
+            if (amount > checkingBal){
+                return false;
+            }
+            else{
+                return true;
+            }
+        }
+        else{
+            if (amount > savingBal){
+                return false;
+            }
+            else {
+                return true;
+            }
+        }
+    }
 }

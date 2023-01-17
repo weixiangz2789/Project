@@ -5,13 +5,15 @@ import java.awt.Dimension;
 import javax.swing.JFrame;
 import javax.swing.*;
 import java.awt.*;
+import java.text.DecimalFormat;
 
 public class UI {
     private static String user;
     private static int pinNum;
+    private static DecimalFormat df = new DecimalFormat("0.00");
     private static Customer customer = new Customer (user, pinNum);
-    static JLabel checkBal = new JLabel("$" + customer.getAccount().getCheckingBal());
-    static JLabel saveBal = new JLabel("$" + customer.getAccount().getSavingBal());
+    static JLabel checkBal = new JLabel("$" + df.format(customer.getAccount().getCheckingBal()));
+    static JLabel saveBal = new JLabel("$" + df.format(customer.getAccount().getSavingBal()));
 
     public static void introFrame() {
         Color background = new Color(28,36,52);
@@ -223,12 +225,10 @@ public class UI {
                     public void actionPerformed(ActionEvent e) {
                         try {
                             customer.getAccount().withdraw(Integer.parseInt(fromAcc_field.getText()), Double.parseDouble(withAmount_field.getText()));
-                            checkBal.setText("$" + customer.getAccount().getCheckingBal());
-                            saveBal.setText("$" + customer.getAccount().getSavingBal());
+                            checkBal.setText("$" + df.format(customer.getAccount().getCheckingBal()));
+                            saveBal.setText("$" + df.format(customer.getAccount().getSavingBal()));
                             fromAcc_field.setText("");
                             withAmount_field.setText("");
-                            withdrawFrame.setVisible(false);
-                            mainFrame.setVisible(true);
                         }
                         catch (NumberFormatException pinNum) {
                             JOptionPane.showMessageDialog(null, "Make sure you are entering a valid number!" );
@@ -283,8 +283,8 @@ public class UI {
                             customer.getAccount().deposit(Integer.parseInt(accNum_field.getText()), Double.parseDouble(depAmount_field.getText()));
                             accNum_field.setText("");
                             depAmount_field.setText("");
-                            checkBal.setText("$" + customer.getAccount().getCheckingBal());
-                            saveBal.setText("$" + customer.getAccount().getSavingBal());
+                            checkBal.setText("$" + df.format(customer.getAccount().getCheckingBal()));
+                            saveBal.setText("$" + df.format(customer.getAccount().getSavingBal()));
                         }
                         catch (NumberFormatException pinNum) {
                             JOptionPane.showMessageDialog(null, "Make sure you are entering a valid number!" );
@@ -315,6 +315,14 @@ public class UI {
                 to_field.setBounds(250, 200, 300, 35);
                 amount_field.setBounds(250, 260, 300, 35);
 
+//                final JComboBox<String> cb = new JComboBox<String>(new String[]{"1", "2"});
+//                cb.setBounds(250, 140, 300, 35);
+//                if (cb.equals("1")){
+//                    to_field.setText("2");
+//                }
+//                else{
+//                    to_field.setText("1");
+//                }
                 JButton submit = new JButton("Submit");
                 submit.setBounds(100, 400, 200, 35);
                 transferFrame.add(submit);
@@ -337,9 +345,10 @@ public class UI {
                 to_field.setBorder(BorderFactory.createEmptyBorder());
                 amount_field.setBorder(BorderFactory.createEmptyBorder());
 
+//                transferFrame.add(cb);
                 transferFrame.add(from);
                 transferFrame.add(from_field);
-                transferFrame.add(to);
+                transferFrame.add(to);;
                 transferFrame.add(to_field);
                 transferFrame.add(amount_field);
                 transferFrame.add(amount);
@@ -347,18 +356,27 @@ public class UI {
 
                 submit.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
-                        try {
+
+//                        if (customer.getAccount().transferable(Integer.parseInt(String.valueOf(cb.getNextFocusableComponent())), Double.parseDouble(amount_field.getText()))) {
+//                            customer.getAccount().transfer(Integer.parseInt(String.valueOf(cb.getNextFocusableComponent())), Double.parseDouble(amount_field.getText()));
+//                            to_field.setText("");
+//                            amount_field.setText("");
+//                            checkBal.setText("$" + df.format(customer.getAccount().getCheckingBal()));
+//                            saveBal.setText("$" + df.format(customer.getAccount().getSavingBal()));
+//                        }
+//                        else{
+//                            JOptionPane.showMessageDialog(null, "Insufficient Funds!" );
+//                        }
+                        if (customer.getAccount().transferable(Integer.parseInt(from_field.getText()), Double.parseDouble(amount_field.getText()))) {
                             customer.getAccount().transfer(Integer.parseInt(from_field.getText()), Double.parseDouble(amount_field.getText()));
-                            transferFrame.setVisible(false);
-                            mainFrame.setVisible(true);
                             from_field.setText("");
                             to_field.setText("");
                             amount_field.setText("");
-                            checkBal.setText("$" + customer.getAccount().getCheckingBal());
-                            saveBal.setText("$" + customer.getAccount().getSavingBal());
-
-                        } catch (NumberFormatException pinNum) {
-                            JOptionPane.showMessageDialog(null, "");
+                            checkBal.setText("$" + df.format(customer.getAccount().getCheckingBal()));
+                            saveBal.setText("$" + df.format(customer.getAccount().getSavingBal()));
+                        }
+                        else{
+                            JOptionPane.showMessageDialog(null, "Insufficient Funds!" );
                         }
                     }
                 });
@@ -447,9 +465,9 @@ public class UI {
         welcome.setBounds(25, 150, 100, 100);
         name.setBounds(25, 175, 200, 100);
         checking.setBounds(25, 225, 200, 100);
-        checkBal.setBounds(25, 250, 100, 100);
+        checkBal.setBounds(25, 250, 250, 100);
         saving.setBounds(25, 300, 100, 100);
-        saveBal.setBounds(25, 325, 100, 100);
+        saveBal.setBounds(25, 325, 250, 100);
 
         for (int i = 0; i < labels.length; i ++){
             mainFrame.add(labels[i]);

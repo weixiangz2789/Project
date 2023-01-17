@@ -6,7 +6,7 @@ public class Customer {
     public Customer (String name, int pin){
         this.name = name;
         this.pin = pin;
-        this.account = new Account (0, 0);
+        this.account = new Account (0.00, 0.00);
     }
 
     public Account getAccount() {
