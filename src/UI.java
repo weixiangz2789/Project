@@ -86,7 +86,6 @@ public class UI {
                     login.add(pin);
                     login.add(pin_field);
                     login.add(loginButton);
-
                     login.setLayout(null);
                     login.setVisible(true);
 
@@ -101,25 +100,24 @@ public class UI {
                         }
                     }
                 });
-
                 }
                 catch (NumberFormatException pinNum) {
                     JOptionPane.showMessageDialog(null, "Make sure you are entering a valid name or pin!" );
                 }
             }
         });
-
         intro.setLayout(null);
         intro.setVisible(true);
     }
+
     public static void createBack(JFrame main, JFrame newFrame){
         Color PINK_RED = new Color(243, 4, 107);
         JButton back = new JButton("Back");
         back.setBounds(750, 565, 75, 30);
         back.setForeground(Color.WHITE);
         back.setBackground(PINK_RED);
-        newFrame.add(back);
         back.setBorderPainted(false);
+        newFrame.add(back);
         back.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 newFrame.dispose();
@@ -129,7 +127,6 @@ public class UI {
     }
 
     public static void mainFrame() {
-
         // Colors + Fonts
         Color background = new Color(28,36,52);
         Color BLUE = new Color(40, 140, 215);
@@ -187,39 +184,64 @@ public class UI {
             public void actionPerformed(ActionEvent e) {
                 mainFrame.setVisible(false);
                 withdrawFrame.setVisible(true);
-                JLabel fromAcc = new JLabel("From Account: ");
-                JLabel withAmount = new JLabel("Withdraw Amount: ");
-                fromAcc.setBounds(100, 105, 200, 100);
-                withAmount.setBounds(100,165,200,100);
                 createBack(mainFrame, withdrawFrame);
 
+                JLabel fromAcc = new JLabel("From Account: ");
+                fromAcc.setBounds(100, 105, 200, 100);
+                fromAcc.setFont(courierNew);
+                fromAcc.setForeground(Color.WHITE);
+
+                JLabel withAmount = new JLabel("Withdraw Amount: ");
+                withAmount.setBounds(100,165,200,100);
+                withAmount.setFont(courierNew);
+                withAmount.setForeground(Color.WHITE);
+
+                JLabel fiveAmount = new JLabel("Amount of $5: ");
+                fiveAmount.setBounds(100,225,200,100);
+                fiveAmount.setFont(courierNew);
+                fiveAmount.setForeground(Color.WHITE);
+
+                JLabel twentyAmount = new JLabel("Amount of $20: ");
+                twentyAmount.setBounds(100,285,200,100);
+                twentyAmount.setFont(courierNew);
+                twentyAmount.setForeground(Color.WHITE);
+
                 JTextField fromAcc_field = new JTextField();
-                JTextField withAmount_field = new JTextField();
                 fromAcc_field.setBounds(260, 140, 300, 35);
+                fromAcc_field.setFont(courierNew);
+                fromAcc_field.setBorder(BorderFactory.createEmptyBorder());
+
+                JTextField withAmount_field = new JTextField();
                 withAmount_field.setBounds(260, 200, 300, 35);
+                withAmount_field.setFont(courierNew);
+                withAmount_field.setBorder(BorderFactory.createEmptyBorder());
+
+                JTextField fiveAmount_field = new JTextField();
+                fiveAmount_field.setBounds(260, 260, 300, 35);
+                fiveAmount_field.setFont(courierNew);
+                fiveAmount_field.setBorder(BorderFactory.createEmptyBorder());
+
+                JTextField twentyAmount_field = new JTextField();
+                twentyAmount_field.setBounds(260, 320, 300, 35);
+                twentyAmount_field.setFont(courierNew);
+                twentyAmount_field.setBorder(BorderFactory.createEmptyBorder());
 
                 JButton submit = new JButton("Submit");
                 submit.setBounds(100, 400, 200, 35);
-                withdrawFrame.add(submit);
-
-                fromAcc.setFont(courierNew);
-                withAmount.setFont(courierNew);
-                fromAcc_field.setFont(courierNew);
-                withAmount_field.setFont(courierNew);
-                fromAcc.setForeground(Color.WHITE);
-                withAmount.setForeground(Color.WHITE);
                 submit.setBackground(Color.WHITE);
                 submit.setFont(courierNew);
                 submit.setBorderPainted(false);
-
-                fromAcc_field.setBorder(BorderFactory.createEmptyBorder());
-                withAmount_field.setBorder(BorderFactory.createEmptyBorder());
 
                 withdrawFrame.add(fromAcc);
                 withdrawFrame.add(fromAcc_field);
                 withdrawFrame.add(withAmount);
                 withdrawFrame.add(withAmount_field);
                 withdrawFrame.add(submit);
+                withdrawFrame.add(fiveAmount);
+                withdrawFrame.add(twentyAmount);
+                withdrawFrame.add(twentyAmount);
+                withdrawFrame.add(fiveAmount_field);
+                withdrawFrame.add(twentyAmount_field);
 
                 submit.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
@@ -238,38 +260,37 @@ public class UI {
             }
         });
 
-
-
         depositButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 mainFrame.setVisible(false);
                 depositFrame.setVisible(true);
+                createBack(mainFrame, depositFrame);
+
                 JLabel accNum = new JLabel("Account Number: ");
-                JLabel depAmount = new JLabel("Deposit Amount: ");
                 accNum.setBounds(100, 105, 200, 100);
+                accNum.setFont(courierNew);
+                accNum.setForeground(Color.WHITE);
+
+                JLabel depAmount = new JLabel("Deposit Amount: ");
                 depAmount.setBounds(100,165,200,100);
+                depAmount.setFont(courierNew);
+                depAmount.setForeground(Color.WHITE);
 
                 JTextField accNum_field = new JTextField();
-                JTextField depAmount_field = new JTextField();
                 accNum_field.setBounds(250, 140, 300, 35);
+                accNum_field.setFont(courierNew);
+                accNum_field.setBorder(BorderFactory.createEmptyBorder());
+
+                JTextField depAmount_field = new JTextField();
                 depAmount_field.setBounds(250, 200, 300, 35);
+                depAmount_field.setFont(courierNew);
+                depAmount_field.setBorder(BorderFactory.createEmptyBorder());
 
                 JButton submit = new JButton("Submit");
                 submit.setBounds(100, 400, 200, 35);
-                depositFrame.add(submit);
-
-                accNum.setFont(courierNew);
-                depAmount.setFont(courierNew);
-                accNum_field.setFont(courierNew);
-                depAmount_field.setFont(courierNew);
-                accNum.setForeground(Color.WHITE);
-                depAmount.setForeground(Color.WHITE);
                 submit.setBackground(Color.WHITE);
                 submit.setFont(courierNew);
                 submit.setBorderPainted(false);
-
-                depAmount_field.setBorder(BorderFactory.createEmptyBorder());
-                accNum_field.setBorder(BorderFactory.createEmptyBorder());
 
                 depositFrame.add(accNum);
                 depositFrame.add(accNum_field);
@@ -291,8 +312,6 @@ public class UI {
                         }
                     }
                 });
-                createBack(mainFrame, depositFrame);
-
             }
         });
 
@@ -301,49 +320,50 @@ public class UI {
             public void actionPerformed(ActionEvent e) {
                 mainFrame.setVisible(false);
                 transferFrame.setVisible(true);
+                createBack(mainFrame, transferFrame);
+
                 JLabel from = new JLabel("From Account: ");
-                JLabel to = new JLabel("To Account: ");
-                JLabel amount = new JLabel("Amount: ");
                 from.setBounds(100, 105, 200, 100);
-                to.setBounds(100, 165, 200, 100);
-                amount.setBounds(100, 225, 200, 100);
-
-                JTextField from_field = new JTextField();
-                JTextField to_field = new JTextField();
-                JTextField amount_field = new JTextField();
-                from_field.setBounds(250, 140, 300, 35);
-                to_field.setBounds(250, 200, 300, 35);
-                amount_field.setBounds(250, 260, 300, 35);
-
-//                final JComboBox<String> cb = new JComboBox<String>(new String[]{"1", "2"});
-//                cb.setBounds(250, 140, 300, 35);
-//                if (cb.equals("1")){
-//                    to_field.setText("2");
-//                }
-//                else{
-//                    to_field.setText("1");
-//                }
-                JButton submit = new JButton("Submit");
-                submit.setBounds(100, 400, 200, 35);
-                transferFrame.add(submit);
-
                 from.setFont(courierNew);
+                from.setForeground(Color.WHITE);
+
+                JLabel to = new JLabel("To Account: ");
+                to.setBounds(100, 165, 200, 100);
                 to.setFont(courierNew);
+                to.setForeground(Color.WHITE);
+
+                JLabel amount = new JLabel("Amount: ");
+                amount.setBounds(100, 225, 200, 100);
                 amount.setFont(courierNew);
                 amount.setForeground(Color.WHITE);
-                from.setForeground(Color.WHITE);
-                to.setForeground(Color.WHITE);
+
+                JTextField from_field = new JTextField();
+                from_field.setBounds(250, 140, 300, 35);
+                from_field.setFont(courierNew);
+                from_field.setBorder(BorderFactory.createEmptyBorder());
+
+                JTextField to_field = new JTextField();
+                to_field.setBounds(250, 200, 300, 35);
+                to_field.setFont(courierNew);
+                to_field.setBorder(BorderFactory.createEmptyBorder());
+
+                JTextField amount_field = new JTextField();
+                amount_field.setBounds(250, 260, 300, 35);
+                amount_field.setFont(courierNew);
+                amount_field.setBorder(BorderFactory.createEmptyBorder());
+
+//                final JComboBox<Integer> cb = new JComboBox<Integer>(new Integer[]{1, 2});
+//                cb.setBounds(250, 140, 300, 35);
+//                cb.setBorder(BorderFactory.createEmptyBorder());
+//                cb.setFont(courierNew);
+//                cb.setBackground(Color.WHITE);
+
+
+                JButton submit = new JButton("Submit");
+                submit.setBounds(100, 400, 200, 35);
                 submit.setBackground(Color.WHITE);
                 submit.setFont(courierNew);
                 submit.setBorderPainted(false);
-
-                from_field.setFont(courierNew);
-                to_field.setFont(courierNew);
-                amount_field.setFont(courierNew);
-
-                from_field.setBorder(BorderFactory.createEmptyBorder());
-                to_field.setBorder(BorderFactory.createEmptyBorder());
-                amount_field.setBorder(BorderFactory.createEmptyBorder());
 
 //                transferFrame.add(cb);
                 transferFrame.add(from);
@@ -356,9 +376,8 @@ public class UI {
 
                 submit.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
-
-//                        if (customer.getAccount().transferable(Integer.parseInt(String.valueOf(cb.getNextFocusableComponent())), Double.parseDouble(amount_field.getText()))) {
-//                            customer.getAccount().transfer(Integer.parseInt(String.valueOf(cb.getNextFocusableComponent())), Double.parseDouble(amount_field.getText()));
+//                        if (customer.getAccount().transferable(Integer.parseInt((String) cb.getSelectedItem()), Double.parseDouble(amount_field.getText()))) {
+//                            customer.getAccount().transfer(Integer.parseInt((String) cb.getSelectedItem()), Double.parseDouble(amount_field.getText()));
 //                            to_field.setText("");
 //                            amount_field.setText("");
 //                            checkBal.setText("$" + df.format(customer.getAccount().getCheckingBal()));
@@ -380,44 +399,40 @@ public class UI {
                         }
                     }
                 });
-
-                createBack(mainFrame, transferFrame);
-
             }
         });
-
-
 
         pinButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 mainFrame.setVisible(false);
                 pinFrame.setVisible(true);
+                createBack(mainFrame, pinFrame);
+
                 JLabel currentPin = new JLabel("Current Pin: ");
-                JLabel newPin = new JLabel("New Pin: ");
                 currentPin.setBounds(100, 105, 200, 100);
+                currentPin.setFont(courierNew);
+                currentPin.setForeground(Color.WHITE);
+
+                JLabel newPin = new JLabel("New Pin: ");
                 newPin.setBounds(100,165,200,100);
+                newPin.setFont(courierNew);
+                newPin.setForeground(Color.WHITE);
 
                 JTextField currentPin_field = new JTextField();
-                JTextField newPin_field = new JTextField();
                 currentPin_field.setBounds(250, 140, 300, 35);
+                currentPin_field.setFont(courierNew);
+                currentPin_field.setBorder(BorderFactory.createEmptyBorder());
+
+                JTextField newPin_field = new JTextField();
                 newPin_field.setBounds(250, 200, 300, 35);
+                newPin_field.setFont(courierNew);
+                newPin_field.setBorder(BorderFactory.createEmptyBorder());
 
                 JButton submit = new JButton("Submit");
                 submit.setBounds(100, 400, 200, 35);
-
-                currentPin.setFont(courierNew);
-                newPin.setFont(courierNew);
-                currentPin.setForeground(Color.WHITE);
-                newPin.setForeground(Color.WHITE);
                 submit.setBackground(Color.WHITE);
                 submit.setFont(courierNew);
                 submit.setBorderPainted(false);
-
-                currentPin_field.setFont(courierNew);
-                newPin_field.setFont(courierNew);
-
-                currentPin_field.setBorder(BorderFactory.createEmptyBorder());
-                newPin_field.setBorder(BorderFactory.createEmptyBorder());
 
                 pinFrame.add(currentPin);
                 pinFrame.add(currentPin_field);
@@ -443,9 +458,6 @@ public class UI {
                         }
                     }
                 });
-
-                createBack(mainFrame, pinFrame);
-
             }
         });
 
@@ -486,6 +498,4 @@ public class UI {
         }
         mainFrame.setVisible(true);
     }
-
-
 }
