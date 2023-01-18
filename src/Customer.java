@@ -21,5 +21,7 @@ public class Customer {
     }
     public void setPin(int newPin){
         pin = newPin;
+        account.setTransactionNumber();
+        account.setRecentAction("Checking Balance: $" + account.getCheckingBal() + "\n" + "Saving Balance: $" + account.getSavingBal() + "\n" + "Transaction ID: " + account.getTransactionNumber() + "\n" + "Changed Pin");
     }
 }

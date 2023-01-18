@@ -58,56 +58,60 @@ public class UI {
 
         submit.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                try {
-                    user = name_field.getText();
-                    pinNum = Integer.parseInt(pin_field.getText());
-                    intro.dispose();
-                    JFrame login = new JFrame();
-                    login.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                    login.setPreferredSize(new Dimension(850, 650));
-                    login.getContentPane().setBackground(background);
-                    login.pack();
-
-                    JLabel pin = new JLabel("Enter a PIN: ");
-                    pin.setBounds(100,165, 200, 100);
-                    pin.setForeground(Color.WHITE);
-
-                    JTextField pin_field = new JTextField();
-                    pin_field.setBounds(250,200,300,35);
-                    pin_field.setFont(courierNew);
-                    pin_field.setBorder(BorderFactory.createEmptyBorder());
-
-                    JButton loginButton = new JButton("Login");
-                    loginButton.setBounds(100, 400, 175, 35);
-                    loginButton.setBackground(Color.white);
-                    loginButton.setFont(courierNew);
-                    loginButton.setBorderPainted(false);
-
-                    login.add(pin);
-                    login.add(pin_field);
-                    login.add(loginButton);
-                    login.setLayout(null);
-                    login.setVisible(true);
-
-                    loginButton.addActionListener(new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-                        if (Integer.parseInt(pin_field.getText()) == pinNum){
-                            login.setVisible(false);
-                            mainFrame();
-                        }
-                        else{
-                            JOptionPane.showMessageDialog(null, "Incorrect Pin!" );
-                        }
-                    }
-                });
-                }
-                catch (NumberFormatException pinNum) {
-                    JOptionPane.showMessageDialog(null, "Make sure you are entering a valid name or pin!" );
-                }
+                user = name_field.getText();
+                pinNum = Integer.parseInt(pin_field.getText());
+                intro.dispose();
+                createLogin();
             }
-        });
+            });
         intro.setLayout(null);
         intro.setVisible(true);
+    }
+    public static void createLogin(){
+        Color background = new Color(28,36,52);
+        Font courierNew = new Font("Courier New", Font.BOLD, 16);
+
+                JFrame login = new JFrame();
+                login.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                login.setPreferredSize(new Dimension(850, 650));
+                login.getContentPane().setBackground(background);
+                login.pack();
+
+                JLabel pin = new JLabel("Enter a PIN: ");
+                pin.setBounds(100,165, 200, 100);
+                pin.setForeground(Color.WHITE);
+
+                JTextField pin_field = new JTextField();
+                pin_field.setBounds(250,200,300,35);
+                pin_field.setFont(courierNew);
+                pin_field.setBorder(BorderFactory.createEmptyBorder());
+
+                JButton loginButton = new JButton("Login");
+                loginButton.setBounds(100, 400, 175, 35);
+                loginButton.setBackground(Color.white);
+                loginButton.setFont(courierNew);
+                loginButton.setBorderPainted(false);
+
+                login.add(pin);
+                login.add(pin_field);
+                login.add(loginButton);
+                login.setLayout(null);
+                login.setVisible(true);
+
+                loginButton.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        try {
+                            if (Integer.parseInt(pin_field.getText()) == pinNum) {
+                                login.setVisible(false);
+                                mainFrame();
+                            } else {
+                                JOptionPane.showMessageDialog(null, "Incorrect Pin!");
+                            }
+                        } catch (NumberFormatException pinNum) {
+                            JOptionPane.showMessageDialog(null, "Make sure you are entering a valid name or pin!");
+                        }
+                    }
+            });
     }
 
     public static void createBack(JFrame main, JFrame newFrame){
@@ -245,14 +249,38 @@ public class UI {
 
                 submit.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
-                        try {
-                            customer.getAccount().withdraw(Integer.parseInt(fromAcc_field.getText()), Double.parseDouble(withAmount_field.getText()));
+                        int fives = 0;
+                        int twenty = 0;
+                        if (!fiveAmount_field.getText().equals("")) {
+                            fives = Integer.parseInt(fiveAmount_field.getText());
+                        }
+                        if (!twentyAmount_field.getText().equals("")) {
+                            twenty = Integer.parseInt(twentyAmount_field.getText());
+                        }
+                        int total = (fives*5) + (twenty * 20);
+                        if (fromAcc_field.getText().equals("1") && Integer.parseInt(withAmount_field.getText()) > customer.getAccount().getCheckingBal()){
+                            JOptionPane.showMessageDialog(null, "Insufficient Funds!" );
+                        }
+                        else if (fromAcc_field.getText().equals("2") && Integer.parseInt(withAmount_field.getText()) > customer.getAccount().getSavingBal()){
+                            JOptionPane.showMessageDialog(null, "Insufficient Funds!" );
+                        }
+                        else if (total != Integer.parseInt(withAmount_field.getText())){
+                            JOptionPane.showMessageDialog(null, "The amount you're trying to withdraw does not match up!" );
+                        }
+                        else if ((total == Integer.parseInt(withAmount_field.getText()))){
+                            customer.getAccount().withdraw(Integer.parseInt(fromAcc_field.getText()), Integer.parseInt(withAmount_field.getText()));
                             checkBal.setText("$" + df.format(customer.getAccount().getCheckingBal()));
                             saveBal.setText("$" + df.format(customer.getAccount().getSavingBal()));
                             fromAcc_field.setText("");
                             withAmount_field.setText("");
+                            fiveAmount_field.setText("");
+                            twentyAmount_field.setText("");
+                            JOptionPane.showMessageDialog(null, customer.getAccount().getRecentTransaction());
+                            withdrawFrame.setVisible(false);
+                            mainFrame.setVisible(false);
+                            createLogin();
                         }
-                        catch (NumberFormatException pinNum) {
+                        else{
                             JOptionPane.showMessageDialog(null, "Make sure you are entering a valid number!" );
                         }
                     }
@@ -306,6 +334,10 @@ public class UI {
                             depAmount_field.setText("");
                             checkBal.setText("$" + df.format(customer.getAccount().getCheckingBal()));
                             saveBal.setText("$" + df.format(customer.getAccount().getSavingBal()));
+                            JOptionPane.showMessageDialog(null, customer.getAccount().getRecentTransaction());
+                            mainFrame.setVisible(false);
+                            depositFrame.setVisible(false);
+                            createLogin();
                         }
                         catch (NumberFormatException pinNum) {
                             JOptionPane.showMessageDialog(null, "Make sure you are entering a valid number!" );
@@ -352,20 +384,12 @@ public class UI {
                 amount_field.setFont(courierNew);
                 amount_field.setBorder(BorderFactory.createEmptyBorder());
 
-//                final JComboBox<Integer> cb = new JComboBox<Integer>(new Integer[]{1, 2});
-//                cb.setBounds(250, 140, 300, 35);
-//                cb.setBorder(BorderFactory.createEmptyBorder());
-//                cb.setFont(courierNew);
-//                cb.setBackground(Color.WHITE);
-
-
                 JButton submit = new JButton("Submit");
                 submit.setBounds(100, 400, 200, 35);
                 submit.setBackground(Color.WHITE);
                 submit.setFont(courierNew);
                 submit.setBorderPainted(false);
 
-//                transferFrame.add(cb);
                 transferFrame.add(from);
                 transferFrame.add(from_field);
                 transferFrame.add(to);;
@@ -376,23 +400,20 @@ public class UI {
 
                 submit.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
-//                        if (customer.getAccount().transferable(Integer.parseInt((String) cb.getSelectedItem()), Double.parseDouble(amount_field.getText()))) {
-//                            customer.getAccount().transfer(Integer.parseInt((String) cb.getSelectedItem()), Double.parseDouble(amount_field.getText()));
-//                            to_field.setText("");
-//                            amount_field.setText("");
-//                            checkBal.setText("$" + df.format(customer.getAccount().getCheckingBal()));
-//                            saveBal.setText("$" + df.format(customer.getAccount().getSavingBal()));
-//                        }
-//                        else{
-//                            JOptionPane.showMessageDialog(null, "Insufficient Funds!" );
-//                        }
-                        if (customer.getAccount().transferable(Integer.parseInt(from_field.getText()), Double.parseDouble(amount_field.getText()))) {
+                        if (from_field.getText().equals(to_field.getText())){
+                            JOptionPane.showMessageDialog(null, "You can't transfer money to the same account!" );
+                        }
+                        else if (customer.getAccount().transferable(Integer.parseInt(from_field.getText()), Double.parseDouble(amount_field.getText()))) {
                             customer.getAccount().transfer(Integer.parseInt(from_field.getText()), Double.parseDouble(amount_field.getText()));
                             from_field.setText("");
                             to_field.setText("");
                             amount_field.setText("");
                             checkBal.setText("$" + df.format(customer.getAccount().getCheckingBal()));
                             saveBal.setText("$" + df.format(customer.getAccount().getSavingBal()));
+                            JOptionPane.showMessageDialog(null, customer.getAccount().getRecentTransaction());
+                            mainFrame.setVisible(false);
+                            depositFrame.setVisible(false);
+                            createLogin();
                         }
                         else{
                             JOptionPane.showMessageDialog(null, "Insufficient Funds!" );
@@ -443,15 +464,22 @@ public class UI {
                 submit.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
                         try {
-                            if (Integer.parseInt(currentPin_field.getText()) == pinNum){
-                                pinNum = Integer.parseInt(newPin_field.getText());
-                                JOptionPane.showMessageDialog(null, "Success!");
+                            if (currentPin_field.getText().equals(newPin_field.getText())){
+                                JOptionPane.showMessageDialog(null, "Your pin number has not changed!" );
+                            }
+                            else if  (Integer.parseInt(currentPin_field.getText()) == pinNum){
+                                customer.setPin(Integer.parseInt(newPin_field.getText()));
+                                pinNum = customer.getPin();
+                                JOptionPane.showMessageDialog(null, customer.getAccount().getRecentTransaction());
+                                currentPin_field.setText("");
+                                newPin_field.setText("");
+                                mainFrame.setVisible(false);
+                                pinFrame.setVisible(false);
+                                createLogin();
                             }
                             else{
                                 JOptionPane.showMessageDialog(null, "Incorrect Pin Number!" );
                             }
-                            currentPin_field.setText("");
-                            newPin_field.setText("");
                         }
                         catch (NumberFormatException pinNum) {
                             JOptionPane.showMessageDialog(null, "Make sure you are entering a valid pin!" );
@@ -475,7 +503,7 @@ public class UI {
 
         ATM.setBounds(25, -12, 100, 100);
         welcome.setBounds(25, 150, 100, 100);
-        name.setBounds(25, 175, 200, 100);
+        name.setBounds(25, 175, 300, 100);
         checking.setBounds(25, 225, 200, 100);
         checkBal.setBounds(25, 250, 250, 100);
         saving.setBounds(25, 300, 100, 100);
