@@ -258,7 +258,10 @@ public class UI {
                             twenty = Integer.parseInt(twentyAmount_field.getText());
                         }
                         int total = (fives*5) + (twenty * 20);
-                        if (fromAcc_field.getText().equals("1") && Integer.parseInt(withAmount_field.getText()) > customer.getAccount().getCheckingBal()){
+                        if (!fromAcc_field.getText().equals("1") && !fromAcc_field.getText().equals("2")){
+                            JOptionPane.showMessageDialog(null, "The account does not exist!" );
+                        }
+                        else if (fromAcc_field.getText().equals("1") && Integer.parseInt(withAmount_field.getText()) > customer.getAccount().getCheckingBal()){
                             JOptionPane.showMessageDialog(null, "Insufficient Funds!" );
                         }
                         else if (fromAcc_field.getText().equals("2") && Integer.parseInt(withAmount_field.getText()) > customer.getAccount().getSavingBal()){
@@ -328,19 +331,23 @@ public class UI {
 
                 submit.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
-                        try {
-                            customer.getAccount().deposit(Integer.parseInt(accNum_field.getText()), Double.parseDouble(depAmount_field.getText()));
-                            accNum_field.setText("");
-                            depAmount_field.setText("");
-                            checkBal.setText("$" + df.format(customer.getAccount().getCheckingBal()));
-                            saveBal.setText("$" + df.format(customer.getAccount().getSavingBal()));
-                            JOptionPane.showMessageDialog(null, customer.getAccount().getRecentTransaction());
-                            mainFrame.setVisible(false);
-                            depositFrame.setVisible(false);
-                            createLogin();
+                        if (!accNum_field.getText().equals("1") && !accNum_field.getText().equals("2")){
+                            JOptionPane.showMessageDialog(null, "The account does not exist!" );
                         }
-                        catch (NumberFormatException pinNum) {
-                            JOptionPane.showMessageDialog(null, "Make sure you are entering a valid number!" );
+                        else {
+                            try {
+                                customer.getAccount().deposit(Integer.parseInt(accNum_field.getText()), Double.parseDouble(depAmount_field.getText()));
+                                accNum_field.setText("");
+                                depAmount_field.setText("");
+                                checkBal.setText("$" + df.format(customer.getAccount().getCheckingBal()));
+                                saveBal.setText("$" + df.format(customer.getAccount().getSavingBal()));
+                                JOptionPane.showMessageDialog(null, customer.getAccount().getRecentTransaction());
+                                mainFrame.setVisible(false);
+                                depositFrame.setVisible(false);
+                                createLogin();
+                            } catch (NumberFormatException pinNum) {
+                                JOptionPane.showMessageDialog(null, "Make sure you are entering a valid number!");
+                            }
                         }
                     }
                 });
@@ -400,7 +407,13 @@ public class UI {
 
                 submit.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
-                        if (from_field.getText().equals(to_field.getText())){
+                        if (!from_field.getText().equals("1") && !from_field.getText().equals("2")){
+                            JOptionPane.showMessageDialog(null, "The account does not exist!" );
+                        }
+                        else if (!to_field.getText().equals("1") && !to_field.getText().equals("2")){
+                            JOptionPane.showMessageDialog(null, "The account does not exist!" );
+                        }
+                        else if (from_field.getText().equals(to_field.getText())){
                             JOptionPane.showMessageDialog(null, "You can't transfer money to the same account!" );
                         }
                         else if (customer.getAccount().transferable(Integer.parseInt(from_field.getText()), Double.parseDouble(amount_field.getText()))) {
