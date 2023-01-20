@@ -58,12 +58,16 @@ public class UI {
 
         submit.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                user = name_field.getText();
-                pinNum = Integer.parseInt(pin_field.getText());
-                intro.dispose();
-                createLogin();
+                try {
+                    user = name_field.getText();
+                    pinNum = Integer.parseInt(pin_field.getText());
+                    intro.dispose();
+                    createLogin();
+                } catch (NumberFormatException e1) {
+                    JOptionPane.showMessageDialog(null, "Make sure you are entering a valid name or pin!");
+                }
             }
-            });
+        });
         intro.setLayout(null);
         intro.setVisible(true);
     }
@@ -107,8 +111,8 @@ public class UI {
                             } else {
                                 JOptionPane.showMessageDialog(null, "Incorrect Pin!");
                             }
-                        } catch (NumberFormatException pinNum) {
-                            JOptionPane.showMessageDialog(null, "Make sure you are entering a valid name or pin!");
+                        } catch (NumberFormatException e1) {
+                            JOptionPane.showMessageDialog(null, "Make sure you are entering a valid pin!");
                         }
                     }
             });
@@ -249,42 +253,42 @@ public class UI {
 
                 submit.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
-                        int fives = 0;
-                        int twenty = 0;
-                        if (!fiveAmount_field.getText().equals("")) {
-                            fives = Integer.parseInt(fiveAmount_field.getText());
-                        }
-                        if (!twentyAmount_field.getText().equals("")) {
-                            twenty = Integer.parseInt(twentyAmount_field.getText());
-                        }
-                        int total = (fives*5) + (twenty * 20);
-                        if (!fromAcc_field.getText().equals("1") && !fromAcc_field.getText().equals("2")){
-                            JOptionPane.showMessageDialog(null, "The account does not exist!" );
-                        }
-                        else if (fromAcc_field.getText().equals("1") && Integer.parseInt(withAmount_field.getText()) > customer.getAccount().getCheckingBal()){
-                            JOptionPane.showMessageDialog(null, "Insufficient Funds!" );
-                        }
-                        else if (fromAcc_field.getText().equals("2") && Integer.parseInt(withAmount_field.getText()) > customer.getAccount().getSavingBal()){
-                            JOptionPane.showMessageDialog(null, "Insufficient Funds!" );
-                        }
-                        else if (total != Integer.parseInt(withAmount_field.getText())){
-                            JOptionPane.showMessageDialog(null, "The amount you're trying to withdraw does not match up!" );
-                        }
-                        else if ((total == Integer.parseInt(withAmount_field.getText()))){
-                            customer.getAccount().withdraw(Integer.parseInt(fromAcc_field.getText()), Integer.parseInt(withAmount_field.getText()));
-                            checkBal.setText("$" + df.format(customer.getAccount().getCheckingBal()));
-                            saveBal.setText("$" + df.format(customer.getAccount().getSavingBal()));
+                        try {
+                            int fives = 0;
+                            int twenty = 0;
+                            if (!fiveAmount_field.getText().equals("")) {
+                                fives = Integer.parseInt(fiveAmount_field.getText());
+                            }
+                            if (!twentyAmount_field.getText().equals("")) {
+                                twenty = Integer.parseInt(twentyAmount_field.getText());
+                            }
+                            int total = (fives * 5) + (twenty * 20);
+                            if (!fromAcc_field.getText().equals("1") && !fromAcc_field.getText().equals("2")) {
+                                JOptionPane.showMessageDialog(null, "The account does not exist!");
+                            } else if (fromAcc_field.getText().equals("1") && Integer.parseInt(withAmount_field.getText()) > customer.getAccount().getCheckingBal()) {
+                                JOptionPane.showMessageDialog(null, "Insufficient Funds!");
+                            } else if (fromAcc_field.getText().equals("2") && Integer.parseInt(withAmount_field.getText()) > customer.getAccount().getSavingBal()) {
+                                JOptionPane.showMessageDialog(null, "Insufficient Funds!");
+                            } else if (total != Integer.parseInt(withAmount_field.getText())) {
+                                JOptionPane.showMessageDialog(null, "The amount you're trying to withdraw does not match up!");
+                            } else if ((total == Integer.parseInt(withAmount_field.getText()))) {
+                                customer.getAccount().withdraw(Integer.parseInt(fromAcc_field.getText()), Integer.parseInt(withAmount_field.getText()));
+                                checkBal.setText("$" + df.format(customer.getAccount().getCheckingBal()));
+                                saveBal.setText("$" + df.format(customer.getAccount().getSavingBal()));
+                                JOptionPane.showMessageDialog(null, customer.getAccount().getRecentTransaction());
+                                withdrawFrame.setVisible(false);
+                                mainFrame.setVisible(false);
+                                createLogin();
+                            } else {
+                                JOptionPane.showMessageDialog(null, "Make sure you are entering a valid number!");
+                            }
                             fromAcc_field.setText("");
                             withAmount_field.setText("");
                             fiveAmount_field.setText("");
                             twentyAmount_field.setText("");
-                            JOptionPane.showMessageDialog(null, customer.getAccount().getRecentTransaction());
-                            withdrawFrame.setVisible(false);
-                            mainFrame.setVisible(false);
-                            createLogin();
                         }
-                        else{
-                            JOptionPane.showMessageDialog(null, "Make sure you are entering a valid number!" );
+                        catch (NumberFormatException e1) {
+                            JOptionPane.showMessageDialog(null, "Make sure you are entering a amount!");
                         }
                     }
                 });
@@ -407,29 +411,30 @@ public class UI {
 
                 submit.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
-                        if (!from_field.getText().equals("1") && !from_field.getText().equals("2")){
-                            JOptionPane.showMessageDialog(null, "The account does not exist!" );
+                        try {
+                            if (!from_field.getText().equals("1") && !from_field.getText().equals("2")) {
+                                JOptionPane.showMessageDialog(null, "The account does not exist!");
+                            } else if (!to_field.getText().equals("1") && !to_field.getText().equals("2")) {
+                                JOptionPane.showMessageDialog(null, "The account does not exist!");
+                            } else if (from_field.getText().equals(to_field.getText())) {
+                                JOptionPane.showMessageDialog(null, "You can't transfer money to the same account!");
+                            } else if (customer.getAccount().transferable(Integer.parseInt(from_field.getText()), Double.parseDouble(amount_field.getText()))) {
+                                customer.getAccount().transfer(Integer.parseInt(from_field.getText()), Double.parseDouble(amount_field.getText()));
+                                from_field.setText("");
+                                to_field.setText("");
+                                amount_field.setText("");
+                                checkBal.setText("$" + df.format(customer.getAccount().getCheckingBal()));
+                                saveBal.setText("$" + df.format(customer.getAccount().getSavingBal()));
+                                JOptionPane.showMessageDialog(null, customer.getAccount().getRecentTransaction());
+                                mainFrame.setVisible(false);
+                                depositFrame.setVisible(false);
+                                createLogin();
+                            } else {
+                                JOptionPane.showMessageDialog(null, "Insufficient Funds!");
+                            }
                         }
-                        else if (!to_field.getText().equals("1") && !to_field.getText().equals("2")){
-                            JOptionPane.showMessageDialog(null, "The account does not exist!" );
-                        }
-                        else if (from_field.getText().equals(to_field.getText())){
-                            JOptionPane.showMessageDialog(null, "You can't transfer money to the same account!" );
-                        }
-                        else if (customer.getAccount().transferable(Integer.parseInt(from_field.getText()), Double.parseDouble(amount_field.getText()))) {
-                            customer.getAccount().transfer(Integer.parseInt(from_field.getText()), Double.parseDouble(amount_field.getText()));
-                            from_field.setText("");
-                            to_field.setText("");
-                            amount_field.setText("");
-                            checkBal.setText("$" + df.format(customer.getAccount().getCheckingBal()));
-                            saveBal.setText("$" + df.format(customer.getAccount().getSavingBal()));
-                            JOptionPane.showMessageDialog(null, customer.getAccount().getRecentTransaction());
-                            mainFrame.setVisible(false);
-                            depositFrame.setVisible(false);
-                            createLogin();
-                        }
-                        else{
-                            JOptionPane.showMessageDialog(null, "Insufficient Funds!" );
+                        catch (NumberFormatException pinNum) {
+                            JOptionPane.showMessageDialog(null, "Make sure you are entering a valid number!");
                         }
                     }
                 });
@@ -478,7 +483,7 @@ public class UI {
                     public void actionPerformed(ActionEvent e) {
                         try {
                             if (currentPin_field.getText().equals(newPin_field.getText())){
-                                JOptionPane.showMessageDialog(null, "Your pin number has not changed!" );
+                                JOptionPane.showMessageDialog(null, "Enter a valid or new pin!" );
                             }
                             else if  (Integer.parseInt(currentPin_field.getText()) == pinNum){
                                 customer.setPin(Integer.parseInt(newPin_field.getText()));
