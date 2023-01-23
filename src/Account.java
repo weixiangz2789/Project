@@ -1,6 +1,4 @@
 public class Account {
-    private final int acc1 = 1;
-    private final int acc2 = 2;
     private double checkingBal;
     private double savingBal;
     private int transactionNumber;
@@ -58,6 +56,8 @@ public class Account {
         }
         transactionNumber ++;
     }
+
+    // Checks if the acc number you're trying to transfer from has sufficient funds
     public boolean transferable(int accNumber, double amount){
         if (accNumber == 1){
             if (amount > checkingBal){
