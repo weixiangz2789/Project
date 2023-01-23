@@ -16,6 +16,18 @@ public class Account {
     public double getSavingBal(){
         return savingBal;
     }
+    public String getRecentTransaction(){
+        return recentAction;
+    }
+    public int getTransactionNumber(){
+        return transactionNumber;
+    }
+    public void setTransactionNumber(){
+        transactionNumber ++;
+    }
+    public void setRecentAction(String s){
+        recentAction = s;
+    }
 
     public void withdraw(int accNumber, double amount){
         if (accNumber == 1){
@@ -75,17 +87,5 @@ public class Account {
                 return true;
             }
         }
-    }
-    public String getRecentTransaction(){
-        return recentAction;
-    }
-    public void setTransactionNumber(){
-        transactionNumber ++;
-    }
-    public void setRecentAction(String s){
-        recentAction = s;
-    }
-    public int getTransactionNumber(){
-        return transactionNumber;
     }
 }
